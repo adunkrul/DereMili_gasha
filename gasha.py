@@ -44,10 +44,16 @@ def add_card(resultdict, card_type, card_rare):
         answer_dict[string_rare].append(temp[i].split(',')
     file.close()
 
+NORMAL_GACHA = 0
+COOL_TYPE_GACHA = 1
+CUTE_TYPE_GACHA = 2
+PASSION_TYPE_GACHA = 3
+FESTIVAL_GACHA = 4
+
 def init_card():
     key_file = open(sys.argv[1], 'r')
     key_lines = key_file.readlines()
-    gachatype = int(key_lines[len(key_lines)-1].replace('\n', ''))
+    gacha_type = int(key_lines[len(key_lines)-1].replace('\n', ''))
     key_file.close()
     answer_dict = dict()
     answer_dict['FSSR'] = list()
@@ -56,7 +62,8 @@ def init_card():
     answer_dict['PSR'] = list()
     answer_dict['SR'] = list()
     answer_dict['R'] = list()
-    if gachatype == 0:
+
+    if gacha_type == NORMAL_GACHA:
         add_card(answer_dict, 'Pickup', 'SSR')
         add_card(answer_dict, 'Pickup', 'SR')
 
@@ -72,17 +79,17 @@ def init_card():
         add_card(answer_dict, 'Passion', 'SR')
         add_card(answer_dict, 'Passion', 'R')
 
-    elif gachatype == 1:
+    elif gacha_type == COOL_TYPE_GACHA:
         add_card(answer_dict, 'Cool', 'SSR')
         add_card(answer_dict, 'Cool', 'SR')
         add_card(answer_dict, 'Cool', 'R')
 
-    elif gachatype == 2:
+    elif gacha_type == CUTE_TYPE_GACHA:
         add_card(answer_dict, 'Cute', 'SSR')
         add_card(answer_dict, 'Cute', 'SR')
         add_card(answer_dict, 'Cute', 'R')
 
-    elif gachatype == 3:
+    elif gacha_type == PASSION_TYPE_GACHA:
         add_card(answer_dict, 'Passion', 'SSR')
         add_card(answer_dict, 'Passion', 'SR')
         add_card(answer_dict, 'Passion', 'R')
@@ -134,14 +141,14 @@ def update_user(user, game, time, alarm):
     return init_user()
 
 def choose_card(gachatype, confirm):
-    if gachatype == 0:
+    if gachatype == NORMAL_GACHA:
         percent_FPSSR = 0
         percent_FSSR = 0
         percent_PSSR = 8
         percent_SSR = 22
         percent_PSR = 200 if confirm else 24
         percent_SR = 770 if confirm else 96
-    elif gachatype < 4:
+    elif gachatype < FESTIVAL_GACHA:
         percent_FPSSR = 0
         percent_FSSR = 0
         percent_PSSR = 0
@@ -313,7 +320,7 @@ class mention_listener(StreamListener):
                         rare = 'SSR'
                     else:
                         rare = 'SR'
-                    Coollist = open('Cool' + rare + ''.txt', 'a')
+                    Coollist = open('Cool' + rare + '.txt', 'a')
                     Cutelist = open('Cute' + rare + '.txt', 'a')
                     Passionlist = open('Passion' + rare + '.txt', 'a')
                     Pickup = open('Pickup' + rare + '.txt', 'w')
@@ -337,7 +344,7 @@ class mention_listener(StreamListener):
                     ##################################
                     # 픽업 종류 변경
                     #
-                    # 갱신 픽업
+                    # 갱신 픽업 [01234]
                     ##################################
                     key_file = open(sys.argv[1], 'a')
                     key_file.write(text.split()[2])
@@ -534,3 +541,4 @@ while (True):
         except TweepError as e:
             logging.error(e.reason)
 api.update_status(status = '@' + key + '\n알람이 너무 많이 중복 등록되어 알람 메시지가 140자가 넘어 에러가 발생하였습니다. 해지해주세요.')
+

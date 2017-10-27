@@ -156,24 +156,12 @@ def choose_card(gashatype, confirm):
   if chosen_level == 'FPSSR':
     chosen_card = random.choice(answer_dict['PSSR'])
     return chosen_card, 0
-  elif chosen_level == 'FSSR':
-    chosen_card = random.choice(answer_dict['FSSR'])
-    return chosen_card, 0
-  elif chosen_level == 'PSSR':
-    chosen_card = random.choice(answer_dict['PSSR'])
-    return chosen_card, 0
-  elif chosen_level == 'SSR':
-    chosen_card = random.choice(answer_dict['SSR'])
-    return chosen_card, 0
-  elif chosen_level == 'PSR':
-    chosen_card = random.choice(answer_dict['PSR'])
-    return chosen_card, 0
-  elif chosen_level == 'SR':
-    chosen_card = random.choice(answer_dict['SR'])
-    return chosen_card, 0
-  else:
+  elif chosen_level == 'R':
     chosen_card = random.choice(answer_dict['R'])
     return chosen_card, 1
+  else:
+    chosen_card = random.choice(answer_dict[chosen_level])
+    return chosen_card, 0
 
 class mention_listener(StreamListener):
   def init_set(self, api, sche, user, card):
